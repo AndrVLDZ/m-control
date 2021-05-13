@@ -62,16 +62,16 @@ def handle_event_msg(data):
 connections = []
 
 
-def handler(current_conn: socket.socket):
-    while True:
-        data: bytes = current_conn.recv(1024)
+def handler(client: socket.socket):
+    while client:
+        data: bytes = client.recv(1024)
         handle_event_msg(data)
-        for c in connections:
-            c.send(bytes(str.encode("\n=>> ") + data))
+        for conn in connections:
+            conn.send(bytes(str.encode("\n=>> ") + data))
         if not data:
-            print("[*] Closed connection with: " + str(current_conn.getpeername()[0]))
-            current_conn.close()
-            connections.remove(current_conn)
+            print("[*] Closed connection with: " + str(client.getpeername()[0]))
+            client.close()
+            connections.remove(client)
             break
 
 
@@ -84,6 +84,7 @@ def main():
     sock.listen(1)
     ip = socket.gethostbyname(socket.getfqdn())
     print("Host IP: " + str(ip))
+    
     # Wait for an incoming connection.
     while True:
         # new socket representing the connection
