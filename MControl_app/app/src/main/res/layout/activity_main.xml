@@ -23,7 +23,6 @@
         android:id="@+id/bConnect"
         android:layout_width="245dp"
         android:layout_height="48dp"
-        android:onClick="onClickConnect"
         android:text="Connect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +92,18 @@
         app:layout_constraintBottom_toTopOf="@+id/etPort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tvDevIP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvConn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
