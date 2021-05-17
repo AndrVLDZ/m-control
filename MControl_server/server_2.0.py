@@ -1,10 +1,6 @@
-# pyinstaller -F -i 'C:\Users\vldnd\Desktop\EXE\D.ico' server.py
+#!/usr/bin/env python3
 
 import socket
-import subprocess
-import keyboard
-import autoit
-import time
 
 
 def print_logo(logo=""):
@@ -26,72 +22,47 @@ def print_logo(logo=""):
         print(LOGO_DAFAULT)
 
 
-def handle_event_msg(data):
-    if str(data, "utf-8") == "s\r\n":
-        subprocess.Popen(["C:\Program Files\PreSonus\Studio One 4\\Studio One.exe"])
-        keyboard.send("space", do_press=True, do_release=True)
-        print("\nKeypress event 'Strat/Stop'")
-    elif str(data, "utf-8") == "b\r\n":
-        subprocess.Popen(["C:\Program Files\PreSonus\Studio One 4\\Studio One.exe"])
-        keyboard.send("shift + b")
-        print("\nKeypress event 'Goto Previous Мarker'")
-    elif str(data, "utf-8") == "n\r\n":
-        subprocess.Popen(["C:\Program Files\PreSonus\Studio One 4\\Studio One.exe"])
-        keyboard.send("shift + n")
-        print("\nKeypress event 'Goto Next Мarker'")
+BUF_SIZE = 1024
 
-    elif str(data, "utf-8") == "c100\r\n":
-        #        subprocess.Popen(['C:\Games\Cyberpunk 2077\bin\x64\\Cyberpunk2077.exe'])
-        print("\nMouse 1000 clicks")
-        clickCounter = 0
-        while clickCounter < 100:
-            clickCounter += 1
-            autoit.mouse_down("left")
-            time.sleep(0.1)
-            autoit.mouse_up("left")
-            time.sleep(0.05)
-
-    elif str(data, "utf-8") == "":
-        print("\nClient request to disconnect")
-
-    else:
-        print("\nJust a msg")
-        print(str(data, "utf-8"))
-
-
+# variable where all connections stored
 connections = []
 
 
-def handler(client: socket.socket):
-    while client:
-        data: bytes = client.recv(1024)
-        handle_event_msg(data)
-        for conn in connections:
-            conn.send(bytes(str.encode("\n=>> ") + data))
-        if not data:
-            print("[*] Closed connection with: " + str(client.getpeername()[0]))
-            client.close()
-            connections.remove(client)
-            break
+def handle_message(data: str):
+    # do smth.
+    if data == "Hi from client!":
+        print("===> Parsed msg: " + data)
 
 
-def main():
+def start_server(host_ip: str, port: int, clients_limit=0):
+    print("[*] Starting server on {ip}:{port}...".format(ip=host_ip, port=port))
+    # use the socket object without calling s.close().
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        # used to associate the socket with a specific network interface and port number
+        sock.bind((host_ip, port))
+        sock.listen(clients_limit)
+        while True:
+            print("[*] Waiting for clients...")
+            conn, addr = sock.accept()
+            connections.append(addr)
+            print("[*] Connected by => ", addr)
+            with conn:
+                while True:
+                    if addr not in connections:
+                        break
+                    data = conn.recv(BUF_SIZE)
+                    if not data or data == b"CLOSING":
+                        print("[*] Closed connection with: ", conn.getpeername()[0])
+                        connections.remove(addr)
+                        break
+                    # if some data recived then --> handle it
+                    handle_message(str(data, "utf-8"))
+                    conn.sendall(data)
+
+
+if __name__ == "__main__":
     print_logo()
-    port = int(input("Set the server port: "))
-    SERVER_ADDR = ("0.0.0.0", port)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(SERVER_ADDR)
-    sock.listen(1)
-    ip = socket.gethostbyname(socket.getfqdn())
-    print("Host IP: " + str(ip))
-    
-    # Wait for an incoming connection.
-    while True:
-        # new socket representing the connection
-        conn: socket.socket
-        conn, addr = sock.accept()  # Accept new connection
-        connections.append(conn)
-        print("[*] Accepted connection from: " + addr[0])
-        handler(conn)
-
-main()
+    HOST = "0.0.0.0"  # Standard loopback interface address (localhost)
+    PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
+    CONNECTIONS_LIMIT = 1
+    start_server(HOST, PORT, clients_limit=CONNECTIONS_LIMIT)

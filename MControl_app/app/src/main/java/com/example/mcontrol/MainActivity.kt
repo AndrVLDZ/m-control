@@ -1,5 +1,4 @@
 package com.example.mcontrol
-
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -81,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             // если уже подключены - выключаемся по нажатию
             if (isConnected) {
                 CoroutineScope(Dispatchers.Main).launch {
+                    sendToSocket("CLOSING", client)
                     client.close()
                     isConnected = false
                 }
@@ -148,5 +148,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLogMAct", "onRestart")
     }
 }
+
 
 
