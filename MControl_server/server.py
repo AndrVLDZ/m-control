@@ -2,6 +2,7 @@
 
 import socket
 import subprocess
+from typing import Any, List
 import keyboard
 import autoit
 import time
@@ -59,7 +60,7 @@ def handle_event_msg(data):
         print(str(data, "utf-8"))
 
 
-connections = []
+connections: List[Any] = []
 
 
 def handler(current_conn: socket.socket):
@@ -92,5 +93,6 @@ def main():
         connections.append(conn)
         print("[*] Accepted connection from: " + addr[0])
         handler(conn)
+
 
 main()

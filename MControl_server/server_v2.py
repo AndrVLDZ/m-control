@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import socket
+from typing import Any, Dict, List, Tuple
+from data_privers import test_data
+from io_auto_lib import Program
 
 
 def print_logo(logo=""):
@@ -16,49 +19,19 @@ def print_logo(logo=""):
      DAW_Start_By_VLDZ 
 
 """
-    if logo != "":
-        print(logo)
-    else:
-        print(LOGO_DAFAULT)
+    print(logo if logo else LOGO_DAFAULT)
 
 
-BUF_SIZE = 1024
-
+__encoding = "utf-8"
+__buf_size = 1024
 # variable where all connections stored
-connections = []
+connections: List[Any] = []
 
 
-def handle_message(data: str):
-    # do smth.
-    if data == "Hi from client!":
-        print("===> Parsed msg: " + data)
-
-
-from kekosik import Program
-
-# название скрипта или действия (ключ из сообщения) -> что сделать
-test_data = {
-    "start/stop": (
-        "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
-        ["space"],
-    ),
-    "Goto Next Мarker (Studio One)": (
-        "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
-        ["shift + n"],
-    ),
-    "Goto Previous Мarker (Studio One)": (
-        "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
-        ["shift + b"],
-    ),
-}
-
-ENCODING = "utf-8"
-
-
-def handle_message2(msg: bytes, scripts: dict[str, (str, list[str])]):
+def handle_message(msg: bytes, scripts: Dict[str, Tuple[str, List[str]]]):
     # TODO: sanitize string
     print("Bytes in msg:", msg)
-    message = str(msg, ENCODING)
+    message = str(msg, __encoding)
 
     if message in scripts.keys():
         program_exe_path, commands = scripts[message]
@@ -76,6 +49,7 @@ def handle_message2(msg: bytes, scripts: dict[str, (str, list[str])]):
     else:
         print("Message:", message, "did not match to specified scripts names")
 
+
 def start_server(host_ip: str, port: int, clients_limit=0):
     print("[*] Starting server on {ip}:{port}...".format(ip=host_ip, port=port))
     # use the socket object without calling s.close().
@@ -84,24 +58,23 @@ def start_server(host_ip: str, port: int, clients_limit=0):
         sock.bind((host_ip, port))
         sock.listen(clients_limit)
         host_ip_add = socket.gethostbyname(socket.getfqdn())
-        print("Host IP: " + str(host_ip_add))
+        print("Host IP:", host_ip_add)
         while True:
             print("[*] Waiting for clients...")
             conn, addr = sock.accept()
             connections.append(addr)
-            print("[*] Connected by => ", addr)
+            print("[*] Connected by =>", addr)
             with conn:
                 while True:
                     if addr not in connections:
                         break
-                    data = conn.recv(BUF_SIZE)
+                    data = conn.recv(__buf_size)
                     if not data or data == b"CLOSING":
-                        print("[*] Closed connection with: ", conn.getpeername()[0])
+                        print("[*] Closed connection with:", conn.getpeername()[0])
                         connections.remove(addr)
                         break
                     # if some data recived then --> handle it
-                    # handle_message(str(data, "utf-8"))
-                    handle_message2(data, test_data)
+                    handle_message(data, test_data)
                     conn.sendall(data)
 
 
