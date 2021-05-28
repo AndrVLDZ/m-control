@@ -4,26 +4,17 @@ import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mcontrol.databinding.ActivityMainBinding
-import io.ktor.network.selector.*
-import io.ktor.network.sockets.*
-import io.ktor.util.cio.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.net.InetSocketAddress
 import java.net.Socket
-import java.util.*
 
+
+lateinit var client: Socket
 // эту функцию -- в карутину
 fun sendToSocket(msg: String, client: Socket) {
     if (msg == "[close]")
@@ -52,7 +43,9 @@ fun ipToString(i: Int): String {
             (i shr 24 and 0xFF)
 }
 
+
 class MainActivity : AppCompatActivity() {
+
     lateinit var bindingClass: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,24 +67,24 @@ class MainActivity : AppCompatActivity() {
         // но нам за это не платят...
         var isConnected = false
         // да, client -- у нас shared resource... ну мир не идеален тоже!
-        lateinit var client: Socket
 
         bindingClass.bConnect.setOnClickListener {
             // если уже подключены - выключаемся по нажатию
             if (isConnected) {
                 CoroutineScope(Dispatchers.Main).launch {
                     sendToSocket("CLOSING", client)
-                    client.close()
                     isConnected = false
                 }
 
+                bindingClass.imgConn.setImageResource(R.drawable.disconnected_p200)
                 bindingClass.tvConn.text = "No connection"
                 bindingClass.bConnect.text = "Connect"
-                bindingClass.textView.visibility = VISIBLE
+                bindingClass.textView.text = "Enter the host IP address"
+                bindingClass.textView.textSize = 14F
                 bindingClass.textView2.visibility = VISIBLE
-                bindingClass.textView3.visibility = GONE
                 bindingClass.etIP.visibility = VISIBLE
                 bindingClass.etPort.visibility = VISIBLE
+                bindingClass.bAddConn.visibility = GONE
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     // подключение происходит тут!
@@ -105,17 +98,19 @@ class MainActivity : AppCompatActivity() {
                     isConnected = true
                 }
 
+                bindingClass.imgConn.setImageResource(R.drawable.connected_p200)
                 bindingClass.tvConn.text = "Connected"
-                bindingClass.textView.visibility = GONE
+                bindingClass.textView.textSize = 18F
+                bindingClass.textView.text = "to: $host"
                 bindingClass.textView2.visibility = GONE
-                bindingClass.textView3.visibility = VISIBLE
-                bindingClass.textView3.text = "to: $host"
                 bindingClass.bConnect.text = "Disconnect"
                 bindingClass.etIP.visibility = GONE
                 bindingClass.etPort.visibility = GONE
+                bindingClass.bAddConn.visibility = VISIBLE
             }
         }
     }
+
 
 
     override fun onResume() {
@@ -139,14 +134,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+    CoroutineScope(Dispatchers.Main).launch {
+        sendToSocket("CLOSING", client)
+    }
+    Log.d("MyLogMAct", "onDestroy")
         super.onDestroy()
-        Log.d("MyLogMAct", "onDestroy")
+
+
     }
 
     override fun onRestart() {
         super.onRestart()
         Log.d("MyLogMAct", "onRestart")
     }
+
 }
 
 
