@@ -2,7 +2,7 @@
 
 import socket
 from typing import Any, Dict, List, Tuple
-from data_privers import test_data
+from data_providers import test_data
 from io_auto_lib import Program
 
 
