@@ -14,4 +14,8 @@ test_data = {
         "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
         ["shift + b"],
     ),
+    "Notepad": (
+        "notepad.exe",
+        ["ctrl + v"],
+    ),
 }
