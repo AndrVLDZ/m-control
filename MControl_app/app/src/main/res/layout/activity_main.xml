@@ -112,6 +112,17 @@
         app:layout_constraintStart_toStartOf="@+id/bConnect"
         app:layout_constraintTop_toBottomOf="@+id/bConnect" />
 
+    <Button
+        android:id="@+id/bRC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Remote controller"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/bAddConn"
+        app:layout_constraintStart_toStartOf="@+id/bAddConn"
+        app:layout_constraintTop_toBottomOf="@+id/bAddConn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
