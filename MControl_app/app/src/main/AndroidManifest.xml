@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MControl">
 
-        <activity android:name=".MsgToServerActivity"
+        <activity android:name=".CommandControlActivity"
             android:screenOrientation="portrait">
         </activity>
 
