@@ -21,24 +21,25 @@
 
     <Button
         android:id="@+id/bConnect"
-        android:layout_width="245dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:text="Connect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etPort"
+        app:layout_constraintStart_toStartOf="@+id/etPort"
         app:layout_constraintTop_toBottomOf="@+id/etPort" />
 
     <TextView
-        android:id="@+id/tvDevIP"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvDeviceIP"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
         android:text="TextView"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bConnect"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/bConnect"
         app:layout_constraintTop_toBottomOf="@+id/bConnect" />
 
     <TextView
@@ -54,31 +55,30 @@
 
     <EditText
         android:id="@+id/etIP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:digits="0123456789."
         android:hint="192.168.0.0"
         android:inputType="numberDecimal"
-        android:text="192.168.0.106"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvConn"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/tvConn"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/etPort"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:digits="0123456789"
         android:ems="10"
         android:hint="9999"
         android:inputType="numberDecimal"
-        android:text="9999"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etIP"
+        app:layout_constraintStart_toStartOf="@+id/etIP"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
@@ -100,28 +100,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/disconnected_p200" />
-
-    <Button
-        android:id="@+id/bAddConn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Add another connection"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/bConnect"
-        app:layout_constraintStart_toStartOf="@+id/bConnect"
-        app:layout_constraintTop_toBottomOf="@+id/bConnect" />
-
-    <Button
-        android:id="@+id/bRC"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Remote controller"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/bAddConn"
-        app:layout_constraintStart_toStartOf="@+id/bAddConn"
-        app:layout_constraintTop_toBottomOf="@+id/bAddConn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

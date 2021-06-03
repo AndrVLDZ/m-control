@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AfterConnectionActivity">
+
+
+    <TextView
+        android:id="@+id/tvConnexted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Connected"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvConnectedHostIP"
+        app:layout_constraintEnd_toEndOf="@+id/imgConn"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imgConn"
+        app:layout_constraintTop_toBottomOf="@+id/imgConn" />
+
+    <Button
+        android:id="@+id/bDisconnect"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Disconnect"
+        app:layout_constraintEnd_toEndOf="@+id/tvDeviceIP"
+        app:layout_constraintStart_toStartOf="@+id/tvDeviceIP"
+        app:layout_constraintTop_toBottomOf="@+id/tvDeviceIP" />
+
+    <TextView
+        android:id="@+id/tvDeviceIP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="DeviceIP"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvConnectedHostIP"
+        app:layout_constraintStart_toStartOf="@+id/tvConnectedHostIP"
+        app:layout_constraintTop_toBottomOf="@+id/tvConnectedHostIP" />
+
+    <TextView
+        android:id="@+id/tvConnectedHostIP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="ip address"
+        app:layout_constraintEnd_toEndOf="@+id/tvConnexted"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvConnexted"
+        app:layout_constraintTop_toBottomOf="@+id/tvConnexted" />
+
+    <ImageView
+        android:id="@+id/imgConn"
+        android:layout_width="232dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/connected_p200" />
+
+    <Button
+        android:id="@+id/bAddConn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Add another connection"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/bDisconnect"
+        app:layout_constraintStart_toStartOf="@+id/bDisconnect"
+        app:layout_constraintTop_toBottomOf="@+id/bDisconnect" />
+
+    <Button
+        android:id="@+id/bRC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Remote controller"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/bAddConn"
+        app:layout_constraintStart_toStartOf="@+id/bAddConn"
+        app:layout_constraintTop_toBottomOf="@+id/bAddConn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
