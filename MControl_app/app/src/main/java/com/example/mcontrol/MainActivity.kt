@@ -1,10 +1,12 @@
 package com.example.mcontrol
 
 import android.content.Context
+import android.content.Intent
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mcontrol.SharedData.connector
 import com.example.mcontrol.databinding.ActivityMainBinding
@@ -12,6 +14,7 @@ import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 object SharedData {
@@ -19,6 +22,8 @@ object SharedData {
 
     @KtorExperimentalAPI
     lateinit var connector: Connector
+
+    // default credentials values
     var defaultIp: String = "192.168.0.106"
     var defaultPort: Int = 9999
 }
@@ -28,8 +33,7 @@ object SharedData {
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("MyLogMAct", "onCreate")
-
+        Log.d("MyLogMainAct", "onCreate")
         super.onCreate(savedInstanceState)
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -67,76 +71,34 @@ class MainActivity : AppCompatActivity() {
         bindingClass.tvDeviceIP.text = "Your Device IP Address: ${SharedData.deviceIP}"
 
         bindingClass.bConnect.setOnClickListener {
-//            val intent = Intent(this, AfterConnectionActivity::class.java)
-//            startActivity(intent)
+            // get validated data from fields
+            val (isValid, hostIp, portNumber) = getFieldsData(
+                defaultIp = SharedData.defaultIp,
+                defaultPort = SharedData.defaultPort
+            )
 
-            bindingClass.apply {
-                // get data and validation status
-                val (isValid, hostIp, portNumber) = getFieldsData(
-                    defaultIp = SharedData.defaultIp,
-                    defaultPort = SharedData.defaultPort
-                )
-                // exit if user is an asshole
-                if (!isValid) return@setOnClickListener
+            // exit if user is an asshole
+            if (!isValid) return@setOnClickListener
 
-                // set connector instance
-                connector = Connector(
-                    host = hostIp,
-                    port = portNumber,
-                )
+            // set connector instance
+            connector = Connector(
+                host = hostIp,
+                port = portNumber,
+            )
 
-                // case: connected now -> need to disconnect
-                if (connector.isConnected) {
-                    connector.disconnect()
-
-//                    // UI changes here [!]
-//                    bindingClass.imgConn.setImageResource(R.drawable.disconnected_p200)
-//                    bindingClass.tvConn.text = "No connection"
-//                    bindingClass.bConnect.text = "Connect"
-//                    bindingClass.textView.text = "Enter the host IP address"
-//                    bindingClass.textView.textSize = 14F
-//                    bindingClass.textView2.visibility = VISIBLE
-//                    bindingClass.etIP.visibility = VISIBLE
-//                    bindingClass.etPort.visibility = VISIBLE
-//                    bindingClass.bAddConn.visibility = GONE
-//                    bindingClass.bRC.visibility = GONE
+            CoroutineScope(Dispatchers.Main).launch {
+//                connector.reset(hostIp, portNumber)
+                try {
+                    connector.connect()
+                    val intent = Intent(this@MainActivity, AfterConnectionActivity::class.java)
+                    startActivity(intent)
+                }  catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "Could not connect!", Toast.LENGTH_SHORT).show()
                 }
-                // case:
-                // 1) connected before then disconnected    -> need to get valid ip, port
-                // 2) never connected                       -> need to get valid ip, port
-                else {
-                    val (isValid, newIp, newPort) = getFieldsData(
-                        defaultIp = SharedData.defaultIp,
-                        defaultPort = SharedData.defaultPort
-                    )
 
-                    if (isValid) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            connector.reset(newIp, newPort)
-                            connector.connect()
-                        }
-
-
-//                        // UI changes here [!]
-//                        imgConn.setImageResource(R.drawable.connected_p200)
-//                        tvConn.text = "Connected"
-//                        textView.textSize = 18F
-//                        textView.text = "to: ${connector.host}"
-//                        textView2.visibility = GONE
-//                        bConnect.text = "Disconnect"
-//                        etIP.visibility = GONE
-//                        etPort.visibility = GONE
-//                        bAddConn.visibility = VISIBLE
-//                        bRC.visibility = VISIBLE
-                    }
-                }
             }
-        }
 
-//        bindingClass.bRC.setOnClickListener {
-//            val intent = Intent(this, CommandControlActivity::class.java)
-//            startActivity(intent)
-//        }
+        }
     }
 
 

@@ -21,14 +21,11 @@ class Connector(host: String, port: Int) {
     val isConnected: Boolean get() = ::socket.isInitialized && !socket.isClosed
 
     init {
-        // TODO : Validation
-
         this.host = host
         this.port = port
     }
 
     suspend fun reset(newHost: String, newPort: Int) {
-        // TODO : Validation
         if (isConnected) {
             disconnect()
         }
