@@ -44,7 +44,7 @@ class Program:
                 "Could not find *.exe file in the specified path", program_exe
             )
 
-        # TODO: выснить нужен ли нам subprocess для чего-нибудь в будущем
+        # TODO: выяснить нужен ли нам subprocess для чего-нибудь в будущем
         self.subproc = None
 
     def open_in_subprocess(self):

@@ -1,0 +1,21 @@
+
+# info:
+#   Python binding for AutoItX3.dll
+# installation:
+#   pip install -U pyautoit
+pyautoit
+
+# info:
+#   Take full control of your keyboard with this small Python library.
+#   Hook global events, register hotkeys, simulate key presses and much more.
+# installation:
+#   pip install -U keyboard
+keyboard
+
+
+# info:
+#   A lightweight wrapper around Python’s sqlite3 database with a simple,
+#   Pythonic dict-like interface and support for multi-thread access.
+# installation:
+#   pip install sqlitedict
+sqlitedict
