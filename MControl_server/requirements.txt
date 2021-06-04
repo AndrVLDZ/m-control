@@ -12,10 +12,24 @@ pyautoit
 #   pip install -U keyboard
 keyboard
 
-
 # info:
 #   A lightweight wrapper around Python’s sqlite3 database with a simple,
 #   Pythonic dict-like interface and support for multi-thread access.
 # installation:
 #   pip install sqlitedict
 sqlitedict
+
+# info:
+#   PyCryptodome is a self-contained Python package
+#   of low-level cryptographic primitives.
+# installation:
+#   pip install pycryptodome
+pycryptodome
+
+# info:
+#   TinyDB is a tiny, document oriented database optimized for your happiness :)
+#   It’s written in pure Python and has no external requirements.
+#   The target are small apps that would be blown away by a SQL-DB or an external database server.
+# installation:
+#   pip install tinydb
+tinydb
