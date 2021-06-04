@@ -5,9 +5,15 @@ import android.os.StrictMode
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.mcontrol.SharedData.connector
-import com.example.mcontrol.databinding.ActivityMsgToServerBinding
+import com.example.mcontrol.databinding.ActivityCommandControlBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +30,20 @@ class CommandControlActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val bindingClass: ActivityMsgToServerBinding = ActivityMsgToServerBinding.inflate(layoutInflater)
+        val bindingClass: ActivityCommandControlBinding = ActivityCommandControlBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
+
+        // val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        // val navController = findNavController(R.id.controllerFragment)
+        //
+        // val appBarConfiguration = AppBarConfiguration(setOf(R.id.connectionsFragment, R.id.connectionsFragment, R.id.settingsFragment))
+        // setupActionBarWithNavController(navController, appBarConfiguration)
+        //
+        // bottomNavigationView.setupWithNavController(navController)
+
 
 
         // On Click Listeners
-
         val sendMsgOnClick: (View) -> Unit = {
             val msg = bindingClass.etMsg.text.toString()
             CoroutineScope(Dispatchers.Main).launch {
@@ -61,5 +75,11 @@ class CommandControlActivity : AppCompatActivity() {
         bindingClass.button10.setOnClickListener(sendCmdOnClick)
         bindingClass.button11.setOnClickListener(sendCmdOnClick)
         bindingClass.button12.setOnClickListener(sendCmdOnClick)
+    }
+
+    override fun onBackPressed() {
+        // super.onBackPressed();
+        Toast.makeText(this@CommandControlActivity, "There is no back action!", Toast.LENGTH_LONG).show()
+        return
     }
 }

@@ -4,16 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.mcontrol.databinding.ActivityAfterConnectionBinding
-
-class AfterConnectionActivity : AppCompatActivity() {
+import com.example.mcontrol.databinding.ActivityConnectionsManagerBinding
+class ConnectionsManagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("AfterConnectionAct", "onCreate")
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_after_connection)
+        setContentView(R.layout.activity_connections_manager)
 
-        val bindingClass = ActivityAfterConnectionBinding.inflate(layoutInflater)
+        val bindingClass = ActivityConnectionsManagerBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
 
         bindingClass.apply {

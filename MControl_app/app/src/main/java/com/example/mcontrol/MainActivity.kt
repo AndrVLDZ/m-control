@@ -14,7 +14,6 @@ import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 object SharedData {
@@ -24,14 +23,14 @@ object SharedData {
     lateinit var connector: Connector
 
     // default credentials values
-    var defaultIp: String = "192.168.0.106"
+    var defaultIp: String = "192.168.0.0"
     var defaultPort: Int = 9999
 }
 
 
 @KtorExperimentalAPI
 class MainActivity : AppCompatActivity() {
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("MyLogMainAct", "onCreate")
         super.onCreate(savedInstanceState)
@@ -41,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val bindingClass = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
+
 
         fun getIpAddress(): String {
             val wifiManager =
@@ -68,13 +68,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         SharedData.deviceIP = getIpAddress()
-        bindingClass.tvDeviceIP.text = "Your Device IP Address: ${SharedData.deviceIP}"
+        bindingClass.tvDeviceIP.text = "Your device IP address: ${SharedData.deviceIP}"
 
         bindingClass.bConnect.setOnClickListener {
             // get validated data from fields
             val (isValid, hostIp, portNumber) = getFieldsData(
-                defaultIp = SharedData.defaultIp,
-                defaultPort = SharedData.defaultPort
+                    defaultIp = SharedData.defaultIp,
+                    defaultPort = SharedData.defaultPort
             )
 
             // exit if user is an asshole
@@ -82,15 +82,16 @@ class MainActivity : AppCompatActivity() {
 
             // set connector instance
             connector = Connector(
-                host = hostIp,
-                port = portNumber,
+                    host = hostIp,
+                    port = portNumber,
             )
 
             CoroutineScope(Dispatchers.Main).launch {
 //                connector.reset(hostIp, portNumber)
                 try {
                     connector.connect()
-                    val intent = Intent(this@MainActivity, AfterConnectionActivity::class.java)
+                    Toast.makeText(this@MainActivity, "Connected to ${SharedData.connector.host}: ${SharedData.connector.port}", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@MainActivity, CommandControlActivity::class.java)
                     startActivity(intent)
                 }  catch (e: Exception) {
                     Toast.makeText(this@MainActivity, "Could not connect!", Toast.LENGTH_SHORT).show()
