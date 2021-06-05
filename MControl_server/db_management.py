@@ -31,10 +31,10 @@ def process_db(filename: str, is_encrypted: bool = False):
         decrypt(database_path, PASSWORD, new_name)
         database_path = new_name
 
-    pwd = os.path.dirname(os.path.realpath(__file__))
+    cwd = os.path.dirname(os.path.realpath(__file__))
     db = ponyORM.Database()
     db.bind(
-        provider="sqlite", filename=os.path.join(pwd, database_path), create_db=False
+        provider="sqlite", filename=os.path.join(cwd, database_path), create_db=False
     )
 
     # do stuff with DB

@@ -28,7 +28,13 @@ pycryptodome
 tinydb
 
 # info:
-#   pony orm
+#   Pony Orm
 # installation:
 #   pip install pony
 pony
+
+# info:
+#   https://github.com/pywinauto/pywinauto
+# installation:
+#   pip install pywinauto
+pywinauto
