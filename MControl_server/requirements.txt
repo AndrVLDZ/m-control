@@ -1,0 +1,40 @@
+
+# info:
+#   Python binding for AutoItX3.dll
+# installation:
+#   pip install -U pyautoit
+pyautoit
+
+# info:
+#   Take full control of your keyboard with this small Python library.
+#   Hook global events, register hotkeys, simulate key presses and much more.
+# installation:
+#   pip install -U keyboard
+keyboard
+
+# info:
+#   PyCryptodome is a self-contained Python package
+#   of low-level cryptographic primitives.
+# installation:
+#   pip install pycryptodome
+pycryptodome
+
+# info:
+#   TinyDB is a tiny, document oriented database optimized for your happiness :)
+#   It’s written in pure Python and has no external requirements.
+#   The target are small apps that would be blown away by a SQL-DB or an external database server.
+# installation:
+#   pip install tinydb
+tinydb
+
+# info:
+#   Pony Orm
+# installation:
+#   pip install pony
+pony
+
+# info:
+#   https://github.com/pywinauto/pywinauto
+# installation:
+#   pip install pywinauto
+pywinauto
