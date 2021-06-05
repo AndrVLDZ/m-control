@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.example.mcontrol.databinding.ActivityAfterConnectionBinding
 
 class AfterConnectionActivity : AppCompatActivity() {
@@ -17,10 +18,9 @@ class AfterConnectionActivity : AppCompatActivity() {
         setContentView(bindingClass.root)
 
         bindingClass.apply {
-            tvConnectedServer.text = "Connected to ${SharedData.connector.host}: ${SharedData.connector.port}"
+            tvConnectedServer.text = "to: ${SharedData.connector.host} Port: ${SharedData.connector.port}"
             tvDeviceIP.text = "Your device IP address: ${SharedData.deviceIP}"
         }
-
 
         // <!> pseudo code
         // if (button("Disconnect").WasPressed) { doDisconnectFromCurrentConnection() }
@@ -42,5 +42,16 @@ class AfterConnectionActivity : AppCompatActivity() {
             val intent = Intent(this, CommandControlActivity::class.java)
             startActivity(intent)
         }
+
+        bindingClass.bAbout.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        // super.onBackPressed();
+        Toast.makeText(this@AfterConnectionActivity, "There is no back action!", Toast.LENGTH_LONG).show()
+        return
     }
 }

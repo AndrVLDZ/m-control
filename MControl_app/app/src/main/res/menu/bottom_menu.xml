@@ -7,7 +7,7 @@
         android:title="Connections"
         android:icon="@drawable/ic_link"/>
     <item
-        android:id="@+id/controllerFragment"
+        android:id="@+id/commandFragment"
         android:title="Controller"
         android:icon="@drawable/ic_controller"/>
     <item

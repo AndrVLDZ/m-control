@@ -91,7 +91,8 @@ class MainActivity : AppCompatActivity() {
                 try {
                     connector.connect()
                     Toast.makeText(this@MainActivity, "Connected to ${SharedData.connector.host}: ${SharedData.connector.port}", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@MainActivity, CommandControlActivity::class.java)
+//                    val intent = Intent(this@MainActivity, CommandControlActivity::class.java)
+                    val intent = Intent(this@MainActivity, AfterConnectionActivity::class.java)
                     startActivity(intent)
                 }  catch (e: Exception) {
                     Toast.makeText(this@MainActivity, "Could not connect!", Toast.LENGTH_SHORT).show()

@@ -42,4 +42,4 @@ def process_db(filename: str, is_encrypted: bool = False):
 
 if __name__ == "__main__":
     # process_db("test_plain.db", is_encrypted=False)
-    process_db(filename="sqlite_pony_plain.db")
+    process_db(filename="database.sqlite")

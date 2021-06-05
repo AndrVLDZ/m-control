@@ -188,14 +188,6 @@
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        android:id="@+id/controllerFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:name="com.example.ExampleFragment" />-->
-
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/BottomNavigationView"
@@ -209,5 +201,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

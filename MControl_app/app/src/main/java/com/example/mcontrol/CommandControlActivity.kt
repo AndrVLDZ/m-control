@@ -77,9 +77,11 @@ class CommandControlActivity : AppCompatActivity() {
         bindingClass.button12.setOnClickListener(sendCmdOnClick)
     }
 
-    override fun onBackPressed() {
-        // super.onBackPressed();
-        Toast.makeText(this@CommandControlActivity, "There is no back action!", Toast.LENGTH_LONG).show()
-        return
-    }
+
+
+//    override fun onBackPressed() {
+//        // super.onBackPressed();
+//        Toast.makeText(this@CommandControlActivity, "There is no back action!", Toast.LENGTH_LONG).show()
+//        return
+//    }
 }
