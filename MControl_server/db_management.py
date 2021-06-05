@@ -21,6 +21,7 @@ def encrypt(filename_in: str, password: str, filename_out: str):
 DIRNAME = "data"
 PASSWORD = "password"
 
+
 def process_db(filename: str, is_encrypted: bool = False):
     database_path: str = os.path.join(DIRNAME, filename)
     if is_encrypted == True:
@@ -32,12 +33,11 @@ def process_db(filename: str, is_encrypted: bool = False):
 
     pwd = os.path.dirname(os.path.realpath(__file__))
     db = ponyORM.Database()
-    db = SqliteDict(os.path.join(pwd, database_path), flag="r")
+    db.bind(
+        provider="sqlite", filename=os.path.join(pwd, database_path), create_db=False
+    )
 
-    for key, value in read_only_db.iteritems():
-        print(key, value)
-
-    print(len(read_only_db))
+    # do stuff with DB
 
 
 if __name__ == "__main__":

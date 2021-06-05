@@ -13,13 +13,6 @@ pyautoit
 keyboard
 
 # info:
-#   A lightweight wrapper around Python’s sqlite3 database with a simple,
-#   Pythonic dict-like interface and support for multi-thread access.
-# installation:
-#   pip install sqlitedict
-sqlitedict
-
-# info:
 #   PyCryptodome is a self-contained Python package
 #   of low-level cryptographic primitives.
 # installation:
@@ -33,3 +26,9 @@ pycryptodome
 # installation:
 #   pip install tinydb
 tinydb
+
+# info:
+#   pony orm
+# installation:
+#   pip install pony
+pony
