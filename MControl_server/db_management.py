@@ -1,9 +1,10 @@
 import os
 import sys
+from pony import orm as ponyORM
 
 # use `pysqlsimplecipher` from git submodules
 from pysqlsimplecipher import decryptor, encryptor
-from sqlitedict import SqliteDict
+
 
 def decrypt(filename_in: str, password: str, filename_out: str):
     """Usage: encrypted.db <password> output.db"""
@@ -16,6 +17,7 @@ def encrypt(filename_in: str, password: str, filename_out: str):
     passwd = bytearray(password.encode("utf8"))
     encryptor.encrypt_file(filename_in, passwd, filename_out)
 
+
 DIRNAME = "data"
 PASSWORD = "password"
 
@@ -27,14 +29,17 @@ def process_db(filename: str, is_encrypted: bool = False):
         # TODO: handling of possible DB decryption errors
         decrypt(database_path, PASSWORD, new_name)
         database_path = new_name
-    
+
     pwd = os.path.dirname(os.path.realpath(__file__))
-    read_only_db = SqliteDict(os.path.join(pwd, database_path), flag='r')
+    db = ponyORM.Database()
+    db = SqliteDict(os.path.join(pwd, database_path), flag="r")
 
     for key, value in read_only_db.iteritems():
         print(key, value)
 
     print(len(read_only_db))
 
+
 if __name__ == "__main__":
-    process_db('test_plain.db', is_encrypted=False)
+    # process_db("test_plain.db", is_encrypted=False)
+    process_db(filename="sqlite_pony_plain.db")
