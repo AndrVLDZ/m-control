@@ -38,3 +38,13 @@ pony
 # installation:
 #   pip install pywinauto
 pywinauto
+
+# tests via pytest
+# installation:
+#   pip install -U pytest
+pytest
+
+# more packages
+jsonschema
+rich
+python-nubia

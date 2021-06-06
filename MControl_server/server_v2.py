@@ -2,7 +2,9 @@
 
 import socket
 from typing import Any, Dict, List, Tuple
-from data_providers import test_data
+from dataclasses import dataclass
+
+# from data_providers import test_data
 from io_auto_lib import Program
 
 
@@ -22,16 +24,24 @@ def print_logo(logo=""):
     print(logo if logo else LOGO_DAFAULT)
 
 
-__encoding = "utf-8"
-__buf_size = 1024
-# variable where all connections stored
-connections: List[Any] = []
+# TCP server configuration parameters
+@dataclass
+class TCPServerConfig:
+    encoding: str = "utf-8"
+    buf_size: int = 1024
+
+
+# create default server config
+config = TCPServerConfig()
+
+# connections storage
+CONNECTIONS: List[Any] = []
 
 
 def handle_message(msg: bytes, scripts: Dict[str, Tuple[str, List[str]]]):
     # TODO: sanitize string
     print("Bytes in msg:", msg)
-    message = str(msg, __encoding)
+    message = str(msg, config.encoding)
 
     if message in scripts.keys():
         program_exe_path, commands = scripts[message]
@@ -62,18 +72,18 @@ def start_server(host_ip: str, port: int, clients_limit=0):
         while True:
             print("[*] Waiting for clients...")
             conn, addr = sock.accept()
-            connections.append(addr)
+            CONNECTIONS.append(addr)
             print("[*] Connected by =>", addr)
             with conn:
                 while True:
-                    if addr not in connections:
+                    if addr not in CONNECTIONS:
                         break
-                    data = conn.recv(__buf_size)
+                    data = conn.recv(config.buf_size)
                     if not data or data == b"CLOSING":
                         print("[*] Closed connection with:", conn.getpeername()[0])
-                        connections.remove(addr)
+                        CONNECTIONS.remove(addr)
                         break
-                    # if some data recived then --> handle it
+                    # if some data received then --> handle it
                     handle_message(data, test_data)
                     conn.sendall(data)
 

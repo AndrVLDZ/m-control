@@ -125,3 +125,6 @@ dmypy.json
 Thumbs.db
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# add "database home" directory
+./MControl_server/data

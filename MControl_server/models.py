@@ -1,13 +1,17 @@
 from datetime import datetime
+from typing import Any, AnyStr, Union, Tuple, Callable
 from pony.converting import str2datetime
 from pony.orm import *
+from rich.table import Table as RichTextTable
 import os
 
+
+# create db `ponyorm` context
 db = Database()
 
 
 class User(db.Entity):
-    id = PrimaryKey(int, size=32, column="id", auto=True, unsigned=True)
+    id = PrimaryKey(int, column="id", auto=True, unsigned=True)
     username = Required(str, unique=True)
     password = Required(str, default="ScooptyWhoop")
     role = Optional(str, default="user")
@@ -25,14 +29,52 @@ class Script(db.Entity):
     updated = Optional(datetime)
 
 
-@db_session
-def papulate_with_test_data():
-    # enable degug mode
-    sql_debug(True)
+def init_user_columns():
+    tb = RichTextTable()
+    tb.add_column("id", justify="right", style="green")
+    tb.add_column("username", style="cyan")
+    tb.add_column("password", style="magenta")
+    tb.add_column("role", justify="center")
+    tb.add_column("scripts (count)", style="yellow")
+    return tb
 
+
+def get_printable_users():
+    tb = init_user_columns()
+    with db_session:
+        all_users = select(u for u in User)
+        for user in all_users:
+            tb.add_row(
+                str(user.id),
+                str(user.username),
+                str(user.password),
+                str(user.role),
+                str(count(user.scripts)),
+            )
+    return tb
+
+
+def get_users_which(constraint_lambda: Callable[[Any], bool]) -> RichTextTable:
+    tb = init_user_columns()
+    with db_session:
+        all_users = select(u for u in User)
+        users = all_users.filter(constraint_lambda)
+        for user in users:
+            tb.add_row(
+                str(user.id),
+                str(user.username),
+                str(user.password),
+                str(user.role),
+                str(count(user.scripts)),
+            )
+    return tb
+
+
+@db_session
+def populate_with_test_data():
     # test users
     vlad = User(username="VladosBandos", password="anime_govno")
-    boris = User(username="BariskaPipiska", password="hentai_top")
+    boris = User(username="BariskaRediska", password="hentai_top")
 
     # test scripts
     Script(
@@ -49,12 +91,15 @@ def papulate_with_test_data():
     Script(
         created_by=boris, script_name="Алиса, скачай all hentai", created=datetime.now()
     )
-    
-    # DO IT!
+
+    # commit transactions to SQLite
     commit()
 
 
 if __name__ == "__main__":
+    # enable debug mode
+    sql_debug(True)
+
     db.bind(
         provider="sqlite",
         filename=os.path.join("data", "database.sqlite"),
@@ -62,4 +107,4 @@ if __name__ == "__main__":
     )
 
     db.generate_mapping(create_tables=True)
-    papulate_with_test_data()
+    populate_with_test_data()

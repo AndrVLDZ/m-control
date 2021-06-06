@@ -1,33 +1,14 @@
 from abc import ABCMeta, abstractmethod
 from typing import Callable, Union
 
-from typing import AnyStr, Union
-
 # Providers - libraries that are used for keyboard and mouse access and automation.
 # >>> import pyautogui
 # >>> import pywinauto
 # >>> import autoit
 
 import subprocess
-import os
 from pathlib import Path
-
-
-def which(program: str) -> Union[None, str]:
-    def is_exe(fpath: AnyStr):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, _fname = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
+from common import which
 
 
 class Program:
