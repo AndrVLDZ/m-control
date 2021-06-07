@@ -1,7 +1,3 @@
-def hello():
-    print("Hello from CLI!")
-
-
 def main():
     # TODO:
     # 0) get all cmd args (<passwd>, <path>, <server_mode=(tcp || http)>, <server_host>, <server_port>, ...)

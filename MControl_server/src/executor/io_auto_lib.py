@@ -3,15 +3,12 @@
 from typing import AnyStr, Union
 
 # Providers - libraries that are used for keyboard and mouse access and automation.
-# >>> import pyautogui
+# >>> import pyautogui, autoit
 import keyboard
-import autoit
 
 import subprocess
 from pathlib import Path
-from common import which
-
-__encoding = "utf-8"
+from src.utils.common import which
 
 
 class Program:
@@ -46,8 +43,7 @@ if __name__ == "__main__":
 
     def run_programs_test(test_case: str):
         programs_exe = {
-            # "Studio One 4": "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
-            # "Cyberpunk 2077": "C:\Games\Cyberpunk 2077\bin\x64\\Cyberpunk2077.exe",
+            # TODO: add more tests
             "Notepad": "notepad.exe",
         }
 

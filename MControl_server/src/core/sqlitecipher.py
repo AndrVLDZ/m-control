@@ -1,7 +1,9 @@
 from typing import Union, Tuple
 import os
-from common import DBConfig, check_dir, check_file
-from common import get_project_dir as cwd
+
+# import configs and common functions
+from src.utils.common import check_dir, check_file, get_project_dir as cwd
+from src.utils.configs import DBConfig
 
 # SQLiteCipher requires `pysqlsimplecipher` from git submodules
 # source:

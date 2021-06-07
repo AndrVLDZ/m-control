@@ -1,10 +1,11 @@
+from typing import Any, Callable
 from datetime import datetime
-from typing import Any, AnyStr, Union, Tuple, Callable
+import os
 from pony.converting import str2datetime
 from pony.orm import *
-from rich.table import Table as RichTextTable
-import os
 
+# using 'rich' for beautiful table printing
+from rich.table import Table as RichTextTable
 
 # create db `ponyorm` context
 db = Database()
@@ -49,7 +50,7 @@ def get_printable_users():
                 str(user.username),
                 str(user.password),
                 str(user.role),
-                str(count(user.scripts)),
+                str(count(user.data)),
             )
     return tb
 
@@ -65,7 +66,7 @@ def get_users_which(constraint_lambda: Callable[[Any], bool]) -> RichTextTable:
                 str(user.username),
                 str(user.password),
                 str(user.role),
-                str(count(user.scripts)),
+                str(count(user.data)),
             )
     return tb
 
@@ -102,7 +103,7 @@ if __name__ == "__main__":
 
     db.bind(
         provider="sqlite",
-        filename=os.path.join("data", "database.sqlite"),
+        filename=os.path.join("tmp_db", "database.sqlite"),
         create_db=True,
     )
 

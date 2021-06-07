@@ -1,14 +1,9 @@
-import os
 from typing import Union
-import tinydb
-from pony.orm import orm as ponyORM
-from pony.orm import db_session
+import os
+from src.utils.configs import DBConfig
+from src.utils.common import check_dir, check_file, get_project_dir as cwd
 
-from dataclasses import dataclass
-
-from common import DBConfig, check_dir, check_file, get_project_dir as cwd
-
-
+# use models to generate new DB
 from models import *
 
 
@@ -27,24 +22,28 @@ class MainDBProvider:
         self.db = Database()
 
     @db_session
-    def try_connect(self) -> bool:
+    def try_connect_to_existing(self) -> bool:
         try:
             self.db.bind(provider="sqlite", filename=self._filename, create_db=False)
             return True
         except Exception as err:
-
+            # TODO: maybe logging ?
             return False
+
+    @db_session
+    def generate_db_from_models(self, **kwargs) -> bool:
+        raise NotImplemented
 
     def db_has_table(self, name: str):
         raise NotImplemented
 
-    def db_has_field(self, tablename: str, field: str):
+    def db_has_field(self, table_name: str, field: str):
         raise NotImplemented
 
-    def get_field_data(self, tablename: str, field: str):
+    def get_field_data(self, table_name: str, field: str):
         raise NotImplemented
 
-    def update_field_data(self, tablename: str, field: str):
+    def update_field_data(self, table_name: str, field: str):
         raise NotImplemented
 
     @db_session

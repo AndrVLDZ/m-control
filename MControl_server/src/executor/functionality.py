@@ -5,10 +5,11 @@ from typing import Callable, Union
 # >>> import pyautogui
 # >>> import pywinauto
 # >>> import autoit
+import keyboard
 
 import subprocess
 from pathlib import Path
-from common import which
+from src.utils.common import which
 
 
 class Program:
@@ -58,10 +59,7 @@ class AbstractKeyboardProvider(metaclass=ABCMeta):
         pass
 
 
-# ---------------------- >
-import keyboard
-
-
+# use keyboard
 class KeyboardProvider(AbstractKeyboardProvider):
     def __init__(self, prog: Program):
         self.program = prog
@@ -85,6 +83,5 @@ class KeyboardProvider(AbstractKeyboardProvider):
 
 if __name__ == "__main__":
     p = Program("Notepad", "notepad.exe")
-
     keyboard_provider = KeyboardProvider(prog=p)
     keyboard_provider.send_hotkey("ctrl+v")

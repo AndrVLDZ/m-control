@@ -1,23 +1,6 @@
 from typing import AnyStr, Union, Optional
 import os
-from models import get_printable_users
-from dataclasses import dataclass
 from pathlib import Path
-
-# ___________________
-from rich.console import Console
-
-# rich text console
-console = Console()
-console.print(get_printable_users())
-# ___________________
-
-
-@dataclass
-class DBConfig:
-    db_folder_name: str = "data"
-    passwd_encoding: str = "utf-8"
-    do_encryption: bool = False
 
 
 def check_file(full_path: str) -> Optional[str]:
@@ -34,7 +17,7 @@ def check_dir(full_path: str) -> Optional[str]:
         raise IOError(f"Invalid directory specified: '{full_path}'")
 
 
-def get_project_dir() -> AnyStr:
+def get_project_dir() -> str:
     return os.path.dirname(os.path.realpath(__file__))
 
 
@@ -48,8 +31,20 @@ def which(program: str) -> Union[None, str]:
             return program
     else:
         for path in os.environ["PATH"].split(os.pathsep):
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
+            if is_exe(exe_file := os.path.join(path, program)):
                 return exe_file
 
     return None
+
+
+if __name__ == "__main__":
+
+    def test_table_printing():
+        from rich.console import Console
+        from src.core.models import get_printable_users
+
+        # rich text console
+        console = Console()
+        console.print(get_printable_users())
+
+    test_table_printing()
