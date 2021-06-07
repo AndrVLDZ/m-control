@@ -126,5 +126,6 @@ Thumbs.db
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-# add "database home" directory
+# ignore databases
 ./MControl_server/data
+./MControl_server/src/core/tmp_db
