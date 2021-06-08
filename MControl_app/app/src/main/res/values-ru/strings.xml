@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">MControl</string>
+    <string name="author_name">Андронов Владислав</string>
+    <string name="author">Автор:</string>
+    <string name="project_on_github">Проект на GitHub:</string>
+    <string name="no_connection">Нет соединения</string>
+    <string name="Your_device_IP_address">IP адрес  вашего устройства</string>
+    <string name="enter_the_host_ip_address">Введите IP адрес сервера</string>
+    <string name="enter_the_port_number">Введите порт</string>
+    <string name="connect">Подключиться</string>
+    <string name="You_need_to_specify_host_ip">Введите ip адрес сервера</string>
+    <string name="You_need_to_specify_port">Введите порт</string>
+    <string name="Message_sent">Сообщение отправлено</string>
+    <string name="Command_sent">Команда отправлена</string>
+    <string name="Failed_to_send">Не отправлено!</string>
+    <string name="Could_not_connect">Невозможно подключиться</string>
+    <string name="Connected_to">Подключено</string>
+    <string name="Host_IP">IP хоста</string>
+    <string name="Port">Порт</string>
+    <string name="disconnect">Отключиться</string>
+    <string name="go_to_remote_control">Перейти к контроллеру</string>
+    <string name="about">О программе</string>
+    <string name="There_is_no_back_action">Нет возврата, сначала отключитесь</string>
+    <string name="Disconnected">Отключено от</string>
+    <string name="Disconnect_failed">Отключение не удалось</string>
+    <string name="enter_keyword">Введите команду:</string>
+    <string name="start_stop">Старт/Стоп</string>
+    <string name="send">Отправить</string>
+    <string name="Or_send">Или запустите пресет</string>
 </resources>

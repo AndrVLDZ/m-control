@@ -1,5 +1,66 @@
 <resources>
     <string name="app_name" translatable="false">MControl</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    about app activity-->
+    <string name="app_version" translatable="false">v 1.0</string>
+    <string name="project_link" translatable="false"><a href="https://github.com/AndrVLDZ/MControl">https://github.com/AndrVLDZ/MControl</a></string>
+    <string name="author_name">Andronov Vladislav</string>
+    <string name="author">Author:</string>
+    <string name="project_on_github">Project on GitHub:</string>
+
+    <!--    main activity-->
+    <string name="no_connection">No connection</string>
+    <string name="Your_device_IP_address">Your device IP address</string>
+    <string name="device_ip" translatable="false">DeviceIP</string>
+    <string name="enter_the_host_ip_address">Enter the host IP address</string>
+    <string name="ip" translatable="false">192.168.0.0</string>
+    <string name="enter_the_port_number">Enter the port number</string>
+    <string name="port" translatable="false">9999</string>
+    <string name="connect">Connect</string>
+
+    <!--    errors-->
+    <string name="You_need_to_specify_host_ip">You need to specify host ip</string>
+    <string name="You_need_to_specify_port">You need to specify port</string>
+
+    <!--toasts-->
+    <string name="Message_sent">Message sent</string>
+    <string name="Command_sent">Command sent</string>
+    <string name="Failed_to_send">Failed to send!</string>
+    <string name="Could_not_connect">Could not connect</string>
+
+
+    <!--    after connection activity-->
+    <string name="Connected_to">Connected</string>
+    <string name="Host_IP">Host IP</string>
+    <string name="Port">Port</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="go_to_remote_control">go to remote control</string>
+    <string name="about">About</string>
+    <string name="deviceip" translatable="false">DeviceIP</string>
+    <string name="connectedserver" translatable="false">ConnectedServer</string>
+    <string name="There_is_no_back_action">No return, disconnect first</string>
+    <string name="Disconnected">Disconnected from</string>
+    <string name="Disconnect_failed">Disconnection failed</string>
+
+
+    <!--    controller activity-->
+    <string name="enter_keyword">Enter the command:</string>
+    <string name="start_stop">Start/Stop</string>
+    <string name="send">Send</string>
+    <string name="Or_send">Or run the preset</string>
+    <string name="b_1" translatable="false">1</string>
+    <string name="b_2" translatable="false">2</string>
+    <string name="b_3" translatable="false">3</string>
+    <string name="b_4" translatable="false">4</string>
+    <string name="b_5" translatable="false">5</string>
+    <string name="b_6" translatable="false">6</string>
+    <string name="b_7" translatable="false">7</string>
+    <string name="b_8" translatable="false">8</string>
+    <string name="b_9" translatable="false">9</string>
+    <string name="b_10" translatable="false">10</string>
+    <string name="b_11" translatable="false">11</string>
+    <string name="b_12" translatable="false">12</string>
+
+
+
 </resources>
