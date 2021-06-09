@@ -129,3 +129,4 @@ Thumbs.db
 # ignore databases
 ./MControl_server/data
 ./MControl_server/src/core/tmp_db
+./MControl_server/src/core/tmp_db/*.sqlite

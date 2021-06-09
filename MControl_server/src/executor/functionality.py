@@ -59,7 +59,6 @@ class AbstractKeyboardProvider(metaclass=ABCMeta):
         pass
 
 
-# use keyboard
 class KeyboardProvider(AbstractKeyboardProvider):
     def __init__(self, prog: Program):
         self.program = prog

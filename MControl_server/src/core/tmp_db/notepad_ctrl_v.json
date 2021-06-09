@@ -1,0 +1,13 @@
+{
+  "script_name": "notepad_ctrl_v",
+  "content": [
+    {
+      "command_type": "open_program",
+      "command_argument": "notepad.exe"
+    },
+    {
+      "command_type": "press_key_then_release",
+      "command_argument": "ctrl+v"
+    }
+  ]
+}

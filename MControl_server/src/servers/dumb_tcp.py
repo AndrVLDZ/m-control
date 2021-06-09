@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import socket
+import sys
 from typing import Any, Dict, List, Tuple
 
 
@@ -27,12 +28,22 @@ class MessageHandler:
 
 
 class DumbTCP:
-    def __init__(self, host: str, port: int, handler: MessageHandler):
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        handler: MessageHandler,
+        server_config: ServerConfig = None,
+    ):
         self.host_ip = host
         self.port_number = port
         # connections storage
         self.connected: Dict[str, Any] = dict()
         self.handler = handler
+        if conf := server_config is not None:
+            self.conf = conf
+        else:
+            self.conf = ServerConfig()
 
     def close_conn(self, address: str):
         if address not in self.connected.keys():
@@ -46,6 +57,7 @@ class DumbTCP:
         return True
 
     def start_server(self):
+        print(self.conf.ascii_logo)
         print(f"[*] Starting server on {self.host_ip}:{self.port_number}...")
         # use the socket object without calling s.close().
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -68,27 +80,25 @@ class DumbTCP:
                             break
 
                         # read data from connected client
-                        data: bytes = conn.recv(config.buf_size)
+                        data: bytes = conn.recv(self.conf.buf_size)
                         # disconnect when got `disconnection keyword` or "empty" msg
                         # (by default in most libs client sends empty msg as disconnection flag)
                         if (
                             not data
-                            or data.decode(config.msg_encoding)
-                            == config.disconnection_keyword
+                            or data.decode(self.conf.msg_encoding)
+                            == self.conf.disconnection_keyword
                         ):
                             self.close_conn(address)
                             break
 
                         # if some data received then --> handle it
                         self.handler.handle_msg(
-                            message=data.decode(config.msg_encoding)
+                            message=data.decode(self.conf.msg_encoding)
                         )
                         conn.sendall(data)
 
 
 if __name__ == "__main__":
-    from src.utils.configs import ServerConfig
-
     # Название скрипта или действия (ключ из сообщения) -> что сделать
     test_data = {
         "start/stop": (
@@ -109,27 +119,15 @@ if __name__ == "__main__":
         ),
     }
 
-    # TODO: we need to get data from DB provider
-    dumbHandler = MessageHandler(test_data)
-
-    LOGO_V1: str = """
-
-       /\                 /\\
-      / \\'._   (\_/)   _.'/ \\
-     /_.''._'--('.')--'_.''._\\
-     | \_ / `;=/ " \=;` \ _/ |
-      \/ `\__|`\___/`|__/`  \/
-       `      \(/|\)/        `
-               " ` "
-         DAW_Start_By_VLDZ 
-
-    """
-    # create default server config
-    config = ServerConfig(ascii_logo=LOGO_V1)
-
-    # Standard loop back interface address (localhost)
-    HOST = "0.0.0.0"
-    # Port to listen on (non-privileged ports are > 1023)
-    PORT = 9999
-    dumbTCP = DumbTCP(HOST, PORT, dumbHandler)
-    dumbTCP.start_server()
+    try:
+        # TODO: we need to get data from DB provider
+        dumbHandler = MessageHandler(test_data)
+        # Standard loop back interface address (localhost)
+        HOST = "0.0.0.0"
+        # Port to listen on (non-privileged ports are > 1023)
+        PORT = 9999
+        dumbTCP = DumbTCP(HOST, PORT, dumbHandler)
+        dumbTCP.start_server()
+    except KeyboardInterrupt:
+        print("[*] Shutting down ...")
+        sys.exit(0)

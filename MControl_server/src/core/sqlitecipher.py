@@ -1,9 +1,8 @@
-from typing import Union, Tuple
-import os
+from typing import Tuple, Optional
 
-# import configs and common functions
-from src.utils.common import check_dir, check_file, get_project_dir as cwd
-from src.utils.configs import DBConfig
+# WARNING: encryption works only when empty sqlite database
+# created with reserved space at the end of each page.
+# more at: https://stackoverflow.com/questions/46452599/
 
 # SQLiteCipher requires `pysqlsimplecipher` from git submodules
 # source:
@@ -14,69 +13,61 @@ from src.utils.configs import DBConfig
 #   pip install <project_dir>/MControl_server/pysqlsimplecipher/
 
 from pysqlsimplecipher import decryptor, encryptor
+from os.path import join as join_path
 
 
-class SQLiteCipher:
-    def __init__(
-        self,
-        filename: str,
-        passwd: str,
-        path_to_db_folder: Union[str, None] = None,
-    ):
-        self.filename = filename
-        # the default value is: <project directory>/<default DB folder>/
-        self.directory = os.path.join(cwd(), DBConfig.db_folder_name)
-        # if directory
-        # was passed to constructor by user
-        # -> check it first
-        if path_to_db_folder is not None:
-            # might raise 'IOError' exception if file do not exists
-            self.directory = check_dir(path_to_db_folder)
+# Usage: encrypted.db <password> output.db
+def decrypt(
+    in_path: Tuple[str, str], passwd: str, file_out: str = None, encoding: str = "utf-8"
+) -> str:
+    directory, file_in = in_path
+    save_path = (
+        join_path(directory, ("decrypted_" + file_in))
+        if file_out is None
+        else join_path(directory, file_out)
+    )
+    decryptor.decrypt_file(
+        filename_in=join_path(directory, file_in),
+        password=bytearray(passwd, encoding),
+        filename_out=save_path,
+    )
 
-        # construct abs path
-        self._abs_path = check_file(os.path.join(self.directory, filename))
-        self._password: bytearray = bytearray(passwd.encode(DBConfig.passwd_encoding))
+    return save_path
 
-    @property
-    def db_path(self) -> Tuple[str, str]:
-        return self.directory, self.filename
 
-    @db_path.setter
-    def db_path(self, path: Tuple[str, str]):
-        dir_path, filename = path
-        # might raise 'IOError' exception if file do not exists
-        self.directory = check_dir(dir_path)
-        # update abs path if file exists
-        # might raise 'FileNotFoundError'
-        self._abs_path = check_file(os.path.join(dir_path, filename))
-        self.filename = filename
+# Usage: plain.db <password> output.db
+def encrypt(
+    in_path: Tuple[str, str], passwd: str, file_out: str = None, encoding: str = "utf-8"
+) -> str:
+    directory, file_in = in_path
+    save_path = (
+        join_path(directory, ("encrypted_" + file_in))
+        if file_out is None
+        else join_path(directory, file_out)
+    )
+    encryptor.encrypt_file(
+        filename_in=join_path(directory, file_in),
+        password=bytearray(passwd, encoding),
+        filename_out=save_path,
+    )
 
-    @property
-    def password(self) -> str:
-        return self._password.decode(encoding=DBConfig.passwd_encoding)
+    return save_path
 
-    @password.setter
-    def password(self, secret: str):
-        self._password = bytearray(secret.encode(encoding=DBConfig.passwd_encoding))
 
-    def decrypt(self, file_out: Union[str, None] = None) -> str:
-        # Usage: encrypted.db <password> output.db
-        # if `file_out` specified -- rewrite with original filename
-        output_filename = file_out if file_out is not None else self.filename
-        decryptor.decrypt_file(
-            self._abs_path,
-            self._password,
-            os.path.join(self.directory, output_filename),
-        )
-        return output_filename
+# usage example
+if __name__ == "__main__":
+    my_password = "qwerty12345"
+    # "database.sqlite" -- needs to be created with reserved space at the end of each page.
+    path = "tmp_db", "database.sqlite"
 
-    def encrypt(self, file_out: Union[str, None] = None) -> str:
-        # Usage: plain.db <password> output.db
-        # if `file_out` specified -- rewrite with original filename
-        output_filename = file_out if file_out is not None else self.filename
-        encryptor.encrypt_file(
-            self._abs_path,
-            self._password,
-            os.path.join(self.directory, output_filename),
-        )
-        return output_filename
+    print("Trying to encrypt DB at:", join_path(*path))
+    encrypted: str = encrypt(path, my_password, "encrypted.sqlite")
+    print("Encrypted at:", encrypted)
+    print("_" * 10)
+
+    print("Trying to decrypt DB at:", encrypted)
+    decrypted: str = decrypt(
+        ("tmp_db", "encrypted.sqlite"), my_password, "decrypted.sqlite"
+    )
+    print("Decrypted at:", decrypted)
+    print("_" * 10)

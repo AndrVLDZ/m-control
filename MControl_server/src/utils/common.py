@@ -1,4 +1,4 @@
-from typing import AnyStr, Union, Optional
+from typing import AnyStr, Optional
 import os
 from pathlib import Path
 
@@ -17,16 +17,12 @@ def check_dir(full_path: str) -> Optional[str]:
         raise IOError(f"Invalid directory specified: '{full_path}'")
 
 
-def get_project_dir() -> str:
-    return os.path.dirname(os.path.realpath(__file__))
-
-
-def which(program: str) -> Union[None, str]:
+def which(program: str) -> Optional[str]:
     def is_exe(file_path: AnyStr):
         return os.path.isfile(file_path) and os.access(file_path, os.X_OK)
 
-    fpath, _fname = os.path.split(program)
-    if fpath:
+    filepath, _filename = os.path.split(program)
+    if filepath:
         if is_exe(program):
             return program
     else:
@@ -38,13 +34,4 @@ def which(program: str) -> Union[None, str]:
 
 
 if __name__ == "__main__":
-
-    def test_table_printing():
-        from rich.console import Console
-        from src.core.models import get_printable_users
-
-        # rich text console
-        console = Console()
-        console.print(get_printable_users())
-
-    test_table_printing()
+    raise NotImplemented
