@@ -1,45 +1,47 @@
 from typing import Tuple, Any
+
 # functionality provider ________________________________
 
 # db provider ___________________________________________
 from core.models import *
 from utils.configs import DBConfig
-from core.db_management import populate_with_entities
+from core.db_management import (
+    populate_with_entities,
+    load_scripts_to_db,
+    USER_DEFAULT_NAME,
+    try_get_scripts_from_db,
+)
 from core.json_schema import *
-from pony import orm
-from datetime import datetime
+from os.path import realpath, dirname, join as join_path
+from utils.common import check_dir
 
 
 class DBProvider:
     def __init__(self, config: DBConfig):
         self.conf = config
+        # path validation: might throw an exception
         self.sqlite_file = config.check_db_path()
+        # path validation: might throw an exception if directory with specified name not found in path
+        _checked = check_dir(
+            join_path(dirname(realpath(__file__)), self.conf.db_folder)
+        )
+        self.JSON_dir_path = _checked
 
+    # loads json scripts from specified directory to SQLite
+    def load_user_scripts_to_db(self, username: str = USER_DEFAULT_NAME):
+        load_scripts_to_db(
+            username=username, json_dir_validated_full_path=self.JSON_dir_path
+        )
+
+    # connects to existing database specified in config
     def connect_to_db(self, create_new_file: bool = True, debug_info: bool = False):
         set_up(self.sqlite_file, file_creation=create_new_file, debug=debug_info)
         if create_new_file:
             populate_with_entities()
 
-    @orm.db_session
-    def load_scripts_to_db(self, username: str, json_dir_validated_full_path: str):
-        all_scripts = get_script_files_from_dir(json_dir_validated_full_path)
-        print("Total count of JSON files in", dirname, "=", len(all_scripts))
-        status, good_scripts = validate_scripts(all_scripts)
-        print("All is valid:", status)
-        print(f"Found {len(good_scripts)} valid files in ->", json_dir_validated_full_path)
-        that_user = User.get(username=username)
-        scripts_of_that_user = []
-
-        for json_content in good_scripts:
-            scripts_of_that_user.append(Script(
-                created_by=that_user,
-                script_name=json_content["script_name"],
-                created=datetime.now(),
-                content=json_content
-            ))
-
-        that_user.scripts.scripts = orm.Set(*scripts_of_that_user)
-        orm.flush()
+    @staticmethod
+    def get_all_scripts_of_user(username: str = USER_DEFAULT_NAME):
+        return try_get_scripts_from_db(username)
 
     def update_users(self, username: str, password: str, query: str) -> bool:
         raise NotImplemented
@@ -55,23 +57,19 @@ class DBProvider:
 
 
 # async server _________________________________________
-from os.path import realpath, dirname, join as join_path
-
-
-def prepare_db(path: Tuple[str, str]):
-    db_dirname, db_filename = path
-    _cwd = join_path(dirname(realpath(__file__)))
-    _path_to_dir = join_path(_cwd, db_dirname)
-
-    db_config = DBConfig(db_filename=db_filename, db_folder=_path_to_dir)
-    db_provider = DBProvider(db_config)
-    return db_provider
-
-
 # use asyncio to implement multi-client server
 import asyncio
 from rich.console import Console
 from rich.pretty import pprint as rich_pprint
+
+
+def get_default_provider(path: Tuple[str, str]):
+    db_dirname, db_filename = path
+    db_config = DBConfig(db_filename=db_filename, db_folder=db_dirname)
+    provider = DBProvider(db_config)
+    provider.connect_to_db(debug_info=True)
+    provider.load_user_scripts_to_db()
+    return provider
 
 
 class EchoServerProtocol(asyncio.Protocol):
@@ -83,15 +81,21 @@ class EchoServerProtocol(asyncio.Protocol):
     def data_received(self, data, msg_encoding: str = "utf-8"):
         message: str = data.decode(msg_encoding)
         print(f"Data received: {message}")
-        # get the provider instances
-        provider = prepare_db(("test_data", "db.sqlite"))
-        provider.connect_to_db(debug_info=True)
-        provider.load_scripts_to_db("default_user", join_path(dirname(realpath(__file__)), "test_data"))
-        # populate with scripts from specified <JSON_dir>
-
-        # TODO: actual data processing
-        # print(f"Send to client: {message}")
-        # self.transport.write(data)
+        provider = get_default_provider(
+            (join_path("core", "tmp_dir"), "db_for_tests.sqlite")
+        )
+        status, scripts_data = provider.get_all_scripts_of_user(
+            username=USER_DEFAULT_NAME
+        )
+        if status:
+            for s in scripts_data:
+                if message in s.keys():
+                    print(f"Received: {message} matched")
+                    rich_pprint(s)
+        else:
+            rich_pprint(
+                f"[red]Err:[/red] could not match specified username [bold yellow]script_name: {message}[/bold yellow]"
+            )
 
 
 async def server_main(host: str, port: int, out_stream: Console):
@@ -134,6 +138,7 @@ def main():
 
 def start():
     from argparse import ArgumentParser
+
     parser = ArgumentParser()
     # TODO: cli argument parsing
     raise NotImplemented
