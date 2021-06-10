@@ -7,15 +7,15 @@ from pony import orm
 from pony.converting import str2datetime
 
 # DB models and context
-from models import set_up
-from models import User, Script
+from .models import set_up
+from .models import User, Script
 
 # using 'rich' for beautiful table printing
 from rich.table import Table as RichTextTable
-from fernet_crypt import password_encrypt
+from .fernet_crypt import password_encrypt
 
 # using JSON validation
-from json_schema import *
+from .json_schema import *
 
 USERS_ENCRYPTION_SECRET = "default_secret"
 USER_DEFAULT_NAME = "default_user"

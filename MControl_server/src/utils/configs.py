@@ -13,11 +13,13 @@ class DBConfig:
     db_encryption: bool = False
     passwd_encoding: str = "utf-8"
     user_passwd_secret: str = "Scoopty-whoop; Whoopity-scoop"
+    create_new_db: bool = False
     
     def check_db_path(self) -> str:
         checked_folder = check_dir(self.db_folder)
-        checked_file_path = check_file(os.path.join(checked_folder, self.db_filename))
-        return checked_file_path
+        if self.create_new_db:
+            return os.path.join(checked_folder, self.db_filename)
+        return check_file(os.path.join(checked_folder, self.db_filename))
 
 
 SERVER_LOGO = """
