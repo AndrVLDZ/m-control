@@ -51,4 +51,9 @@ class AfterConnectionActivity : AppCompatActivity() {
         Toast.makeText(this@AfterConnectionActivity, "${getString(R.string.There_is_no_back_action)}!", Toast.LENGTH_LONG).show()
         return
     }
+
+    override fun onDestroy() {
+        SharedData.connector.disconnect()
+        super.onDestroy()
+    }
 }

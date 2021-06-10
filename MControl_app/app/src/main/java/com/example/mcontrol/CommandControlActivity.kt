@@ -73,4 +73,9 @@ class CommandControlActivity : AppCompatActivity() {
         bindingClass.button12.setOnClickListener(sendCmdOnClick)
     }
 
+    override fun onDestroy() {
+        connector.disconnect()
+        super.onDestroy()
+    }
+
 }
