@@ -1,5 +1,5 @@
 # typing
-from typing import Callable, Any, Tuple
+from typing import Callable, Any, Tuple, Dict
 from datetime import datetime
 
 # use orm with DB
@@ -7,19 +7,56 @@ from pony import orm
 from pony.converting import str2datetime
 
 # DB models and context
-from models import set_up
-from models import User, Script
+from .models import set_up
+from .models import User, Script
 
 # using 'rich' for beautiful table printing
 from rich.table import Table as RichTextTable
 from rich.console import Console
+from .fernet_crypt import password_encrypt
+
+USERS_ENCRYPTION_SECRET = "default_secret"
+
+
+def encrypt_with_secret(
+    plain_passwords: Dict[str, Any],
+    secret_key: str,
+    passwd_encoding: str = "utf-8",
+) -> Dict[str, Any]:
+    # transform dict of <username>:<plain_passwd> to <username>:<encrypted_passwd>
+    encrypted = dict()
+    for name, plain in plain_passwords.items():
+        plain_bytes = plain.encode(passwd_encoding)
+        encrypted[name] = password_encrypt(
+            msg=plain_bytes, secret_key=secret_key
+        ).decode(passwd_encoding)
+    return encrypted
 
 
 @orm.db_session
 def populate_with_entities():
+    # TODO: separation of logic
+    plain_passwd = {
+        "vlad": "do you know the way",
+        "boris": "understandable",
+        "default_user": "default_password",
+    }
+
+    encrypted = encrypt_with_secret(plain_passwd, USERS_ENCRYPTION_SECRET)
     # test users
-    vlad = User(username="vlad", password="do you know the way")
-    boris = User(username="boris", password="understandable")
+    vlad = User(
+        username="vlad",
+        password=encrypted["vlad"],
+    )
+    boris = User(
+        username="boris",
+        password=encrypted["boris"],
+    )
+
+    default_user = User(
+        username="default_user",
+        password=encrypted["default_user"],
+    )
 
     # test scripts
     Script(
@@ -83,6 +120,7 @@ def users_which(constraint_lambda: Callable[[Any], bool]) -> RichTextTable:
     return t
 
 
+# example usage and some tests
 if __name__ == "__main__":
     import os
 
@@ -102,5 +140,5 @@ if __name__ == "__main__":
         console.print(t)
 
     tmp_path = ("tmp_db", "database.sqlite")
-    # create_db_with_entities_test(tmp_path)
-    users_from_existing_db_test(tmp_path)
+    create_db_with_entities_test(tmp_path)
+    # users_from_existing_db_test(tmp_path)

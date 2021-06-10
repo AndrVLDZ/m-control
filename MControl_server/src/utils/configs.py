@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from common import check_dir, check_file
+from .common import check_dir, check_file
 import os
 
 
@@ -12,7 +12,7 @@ class DBConfig:
     db_provider: str = "sqlite"
     db_encryption: bool = False
     passwd_encoding: str = "utf-8"
-    user_passwd_seed: str = "Scoopty-whoop; Whoopity-scoop"
+    user_passwd_secret: str = "Scoopty-whoop; Whoopity-scoop"
     
     def check_db_path(self) -> str:
         checked_folder = check_dir(self.db_folder)

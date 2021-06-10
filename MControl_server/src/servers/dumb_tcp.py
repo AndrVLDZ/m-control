@@ -3,7 +3,7 @@
 import socket
 import sys
 from typing import Any, Dict, List, Tuple
-
+from ..utils.configs import ServerConfig
 
 class MessageHandler:
     def __init__(self, scripts_from_db: Dict[str, Tuple[str, List[str]]]):

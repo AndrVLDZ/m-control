@@ -7,11 +7,11 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 backend = default_backend()
-number_of_iterations = 100_000
+default_iterations = 100_000
 
 
 def _derive_key(
-    passwd: bytes, salt: bytes, iterations: int = number_of_iterations
+    passwd: bytes, salt: bytes, iterations: int = default_iterations
 ) -> bytes:
     """Derive a secret key from a given password and salt"""
     kdf = PBKDF2HMAC(
@@ -25,10 +25,10 @@ def _derive_key(
 
 
 def password_encrypt(
-    msg: bytes, passwd: str, iterations: int = number_of_iterations
+    msg: bytes, secret_key: str, iterations: int = default_iterations
 ) -> bytes:
     salt = secrets.token_bytes(16)
-    key = _derive_key(passwd.encode(), salt, iterations)
+    key = _derive_key(secret_key.encode(), salt, iterations)
     return b64e(
         b"%b%b%b"
         % (
@@ -39,14 +39,15 @@ def password_encrypt(
     )
 
 
-def password_decrypt(token: bytes, passwd: str) -> bytes:
+def password_decrypt(token: bytes, secret_key: str) -> bytes:
     decoded = b64d(token)
     salt, _iter, token = decoded[:16], decoded[16:20], b64e(decoded[20:])
     iterations = int.from_bytes(_iter, "big")
-    key = _derive_key(passwd.encode(), salt, iterations)
+    key = _derive_key(secret_key.encode(), salt, iterations)
     return Fernet(key).decrypt(token)
 
 
+# example of usage
 if __name__ == "__main__":
     encoding = "utf-8"
     # store generated password in secure location
