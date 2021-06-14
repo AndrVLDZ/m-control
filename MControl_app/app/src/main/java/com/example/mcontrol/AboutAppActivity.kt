@@ -13,8 +13,4 @@ class AboutAppActivity : AppCompatActivity() {
         var link = findViewById<TextView>(R.id.tvGitHubLink)
         link.movementMethod = LinkMovementMethod.getInstance()
     }
-    override fun onDestroy() {
-        SharedData.connector.disconnect()
-        super.onDestroy()
-    }
 }
