@@ -74,7 +74,6 @@ from rich.pretty import pprint as rich_pprint
 
 class EchoServerProtocol(asyncio.Protocol):
     def __init__(self, provider: DBProvider):
-        super().__init__(self)
         self.provider = provider
 
     def connection_made(self, transport):

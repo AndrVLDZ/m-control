@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MControl">
         <activity android:name=".ConnectionsManagerActivity"></activity>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AboutAppActivity" />
         <activity android:name=".AfterConnectionActivity" />
         <activity
             android:name=".CommandControlActivity"

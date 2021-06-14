@@ -31,7 +31,7 @@ SERVER_LOGO = """
       \/ `\__|`\___/`|__/`  \/
        `      \(/|\)/        `
                " ` "
-         DAW_Start_By_VLDZ 
+           MControl_Server 
 
 """
 
