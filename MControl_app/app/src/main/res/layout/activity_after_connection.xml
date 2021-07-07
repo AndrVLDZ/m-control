@@ -14,10 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Connected"
+        android:text="@string/Connected_to"
         android:textColor="@color/main_text"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_connected_server"
         app:layout_constraintEnd_toEndOf="@+id/imgConn"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -30,37 +29,60 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:text="Disconnect"
+        android:text="@string/disconnect"
         android:textColor="@color/main_text"
-        app:layout_constraintEnd_toEndOf="@+id/tv_connected_server"
-        app:layout_constraintStart_toStartOf="@+id/tv_connected_server"
-        app:layout_constraintTop_toBottomOf="@+id/tv_connected_server" />
+        app:layout_constraintEnd_toEndOf="@+id/tvConnected"
+        app:layout_constraintStart_toStartOf="@+id/tvConnected"
+        app:layout_constraintTop_toBottomOf="@+id/tvDeviceIP" />
+
+    <Button
+        android:id="@+id/bAbout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/about"
+        android:textColor="@color/main_text"
+        app:layout_constraintEnd_toEndOf="@+id/bRC"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/bRC"
+        app:layout_constraintTop_toBottomOf="@+id/bRC" />
+
+    <Button
+        android:id="@+id/bRC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/go_to_remote_control"
+        android:textColor="@color/main_text"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/bDisconnect"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/bDisconnect"
+        app:layout_constraintTop_toBottomOf="@+id/bDisconnect" />
 
     <TextView
         android:id="@+id/tvDeviceIP"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
-        android:text="DeviceIP"
+        android:text="@string/deviceip"
         android:textColor="@color/hint"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/bDisconnect"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/bDisconnect"
-        app:layout_constraintTop_toBottomOf="@+id/bDisconnect" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_connected_server"
+        app:layout_constraintStart_toStartOf="@+id/tv_connected_server"
+        app:layout_constraintTop_toBottomOf="@+id/tv_connected_server" />
 
     <TextView
         android:id="@+id/tv_connected_server"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="ConnectedServer"
+        android:gravity="center_horizontal"
+        android:text="@string/connectedserver"
         android:textColor="@color/hint"
-        app:layout_constraintEnd_toEndOf="@+id/tvConnected"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tvConnected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvConnected" />
 
     <ImageView
@@ -72,18 +94,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_link" />
-
-    <Button
-        android:id="@+id/bRC"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="go to remote control"
-        android:textColor="@color/main_text"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/tvDeviceIP"
-        app:layout_constraintStart_toStartOf="@+id/tvDeviceIP"
-        app:layout_constraintTop_toBottomOf="@+id/tvDeviceIP" />
 
     <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
 <!--        android:layout_width="0dp"-->

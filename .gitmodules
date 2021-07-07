@@ -1,3 +1,3 @@
-[submodule "MControl_server/pysqlsimplecipher"]
-	path = MControl_server/pysqlsimplecipher
-	url = https://github.com/bssthu/pysqlsimplecipher
+[submodule ".\\MControl_server\\src\\pysqlsimplecipher"]
+	path = .\\MControl_server\\src\\pysqlsimplecipher
+	url = https://github.com/bssthu/pysqlsimplecipher.git

@@ -1,0 +1,9 @@
+{
+  "script_name": "task_manager",
+  "content": [
+    {
+      "command_type": "press_key_then_release",
+      "command_argument": "ctrl+shift+esc"
+    }
+  ]
+}

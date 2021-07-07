@@ -9,4 +9,5 @@ git submodule update --init --recursive
 #     as the old PyCrypto so that most
 #     applications will run unmodified. 
 pip install -U pycryptodome
-pip install ./pysqlsimplecipher
+# install package via setup.py (https://github.com/bssthu/pysqlsimplecipher.git)
+pip install ./MControl_server/src/pysqlsimplecipher

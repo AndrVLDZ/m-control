@@ -2,18 +2,12 @@ package com.example.mcontrol
 
 import android.os.Bundle
 import android.os.StrictMode
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.mcontrol.SharedData.connector
 import com.example.mcontrol.databinding.ActivityCommandControlBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +17,6 @@ class CommandControlActivity : AppCompatActivity() {
 
     @KtorExperimentalAPI
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("MyLogMAct", "onCreate")
 
         super.onCreate(savedInstanceState)
 
@@ -33,21 +26,18 @@ class CommandControlActivity : AppCompatActivity() {
         val bindingClass: ActivityCommandControlBinding = ActivityCommandControlBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
 
-        // val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        // val navController = findNavController(R.id.controllerFragment)
-        //
-        // val appBarConfiguration = AppBarConfiguration(setOf(R.id.connectionsFragment, R.id.connectionsFragment, R.id.settingsFragment))
-        // setupActionBarWithNavController(navController, appBarConfiguration)
-        //
-        // bottomNavigationView.setupWithNavController(navController)
-
-
 
         // On Click Listeners
         val sendMsgOnClick: (View) -> Unit = {
             val msg = bindingClass.etMsg.text.toString()
             CoroutineScope(Dispatchers.Main).launch {
-                connector.send(msg)
+
+                try {
+                    connector.send(msg)
+                    Toast.makeText(this@CommandControlActivity, R.string.Message_sent, Toast.LENGTH_SHORT).show()
+                }  catch (e: Exception) {
+                    Toast.makeText(this@CommandControlActivity, R.string.Failed_to_send, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -55,7 +45,13 @@ class CommandControlActivity : AppCompatActivity() {
             if (view is TextView) {
                 val cmd = view.text.toString()
                 CoroutineScope(Dispatchers.Main).launch {
-                    connector.send(cmd)
+
+                    try {
+                        connector.send(cmd)
+                        Toast.makeText(this@CommandControlActivity, R.string.Command_sent, Toast.LENGTH_SHORT).show()
+                    }  catch (e: Exception) {
+                        Toast.makeText(this@CommandControlActivity, R.string.Failed_to_send, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -77,9 +73,4 @@ class CommandControlActivity : AppCompatActivity() {
         bindingClass.button12.setOnClickListener(sendCmdOnClick)
     }
 
-    override fun onBackPressed() {
-        // super.onBackPressed();
-        Toast.makeText(this@CommandControlActivity, "There is no back action!", Toast.LENGTH_LONG).show()
-        return
-    }
 }

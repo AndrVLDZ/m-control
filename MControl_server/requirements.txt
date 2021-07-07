@@ -10,7 +10,7 @@ pyautoit
 #   Hook global events, register hotkeys, simulate key presses and much more.
 # installation:
 #   pip install -U keyboard
-keyboard
+keyboard~=0.13.5
 
 # info:
 #   PyCryptodome is a self-contained Python package
@@ -31,10 +31,21 @@ tinydb
 #   Pony Orm
 # installation:
 #   pip install pony
-pony
+pony~=0.7.14
 
 # info:
 #   https://github.com/pywinauto/pywinauto
 # installation:
 #   pip install pywinauto
 pywinauto
+
+# tests via pytest
+# installation:
+#   pip install -U pytest
+pytest
+
+# more packages
+jsonschema
+rich~=10.2.2
+python-nubia
+cryptography~=3.4.7

@@ -1,0 +1,13 @@
+{
+  "script_name": "chrome_incognito",
+  "content": [
+    {
+      "command_type": "open_program",
+      "command_argument": "chrome.exe"
+    },
+    {
+      "command_type": "press_key_then_УПС",
+      "command_argument": "ctrl+shift+n"
+    }
+  ]
+}

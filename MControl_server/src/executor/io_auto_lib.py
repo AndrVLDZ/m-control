@@ -3,32 +3,12 @@
 from typing import AnyStr, Union
 
 # Providers - libraries that are used for keyboard and mouse access and automation.
-# >>> import pyautogui
+# >>> import pyautogui, autoit
 import keyboard
-import autoit
 
 import subprocess
-import os
 from pathlib import Path
-
-__encoding = "utf-8"
-
-
-def which(program: str) -> Union[None, str]:
-    def is_exe(fpath: AnyStr):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, _fname = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
+from src.utils.common import which
 
 
 class Program:
@@ -51,7 +31,8 @@ class Program:
         self.subproc = subprocess.Popen([self.exe_path])
 
     def keypress(self, keyboard_cmd: str, release=True):
-        keyboard.send(keyboard_cmd, do_press=True, do_release=release)
+        # keyboard.send(keyboard_cmd, do_press=True, do_release=release)
+        raise NotImplemented
 
     def open_then_keypress(self, keyboard_cmd: str, release=True):
         self.open_in_subprocess()
@@ -60,10 +41,9 @@ class Program:
 
 if __name__ == "__main__":
 
-    def run_programs_TEST(test_case: str):
+    def run_programs_test(test_case: str):
         programs_exe = {
-            # "Studio One 4": "C:\Program Files\PreSonus\Studio One 4\\Studio One.exe",
-            # "Cyberpunk 2077": "C:\Games\Cyberpunk 2077\bin\x64\\Cyberpunk2077.exe",
+            # TODO: add more tests
             "Notepad": "notepad.exe",
         }
 
@@ -73,4 +53,4 @@ if __name__ == "__main__":
 
         progs[test_case].open_then_keypress("ctrl + v")
 
-    run_programs_TEST("Notepad")
+    run_programs_test("Notepad")

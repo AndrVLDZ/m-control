@@ -3,6 +3,10 @@
     - source: https://editor.ponyorm.com/user/vickhov/MControl_database/sqlite
 */
 
+/*
+    - [warn]: outdated db version!
+*/
+
 CREATE TABLE "User" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "username" TEXT UNIQUE NOT NULL,

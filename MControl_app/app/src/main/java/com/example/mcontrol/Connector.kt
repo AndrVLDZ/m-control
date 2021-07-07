@@ -1,5 +1,4 @@
 package com.example.mcontrol
-
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.util.*
@@ -39,7 +38,6 @@ class Connector(host: String, port: Int) {
     }
 
     suspend fun connect() {
-        // TODO: Try/Catch ?
         socket = aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect(InetSocketAddress(host, port))
         input = socket.openReadChannel()
         output = socket.openWriteChannel(autoFlush = true)

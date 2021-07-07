@@ -125,3 +125,8 @@ dmypy.json
 Thumbs.db
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# ignore databases
+./MControl_server/data
+./MControl_server/src/core/tmp_db
+./MControl_server/src/core/tmp_db/*.sqlite
